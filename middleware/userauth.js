@@ -208,7 +208,7 @@ UserAuthRouter.post("/add/newuser", async (req, res) => {
           $or: [{ number }, { email: { $regex: email, $options: "i" } }],
         });
 
-        if (user && response.role === "student") {
+        if (user || response.role === "student") {
           // Output Obj User already exists
           Obj = {
             status: "false",
