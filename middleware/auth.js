@@ -474,4 +474,4 @@ AuthRouter.post("/update/password", async (req, res) => {
   }
 });
 
-export default AuthRouter;
+module.exports[AuthRouter];

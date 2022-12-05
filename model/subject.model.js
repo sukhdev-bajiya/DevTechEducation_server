@@ -34,4 +34,4 @@ const devtechSubjectModel = mongoose.model(
   subjectSchema,
   "devtechsubjects"
 );
-export default devtechSubjectModel;
+module.exports[devtechSubjectModel];

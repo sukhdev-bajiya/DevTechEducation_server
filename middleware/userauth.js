@@ -357,4 +357,4 @@ UserAuthRouter.post("/edit", async (req, res) => {
   }
 });
 
-export default UserAuthRouter;
+module.exports[UserAuthRouter];

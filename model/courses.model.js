@@ -39,4 +39,4 @@ const devtechCourseModel = mongoose.model(
   courseSchema,
   "devtechcourses"
 );
-export default devtechCourseModel;
+module.exports[devtechCourseModel];

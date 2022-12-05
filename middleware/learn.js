@@ -545,4 +545,4 @@ LearnRouter.post("/buy/course", async (req, res) => {
   }
 });
 
-export default LearnRouter;
+module.exports[LearnRouter];

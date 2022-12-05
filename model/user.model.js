@@ -77,4 +77,4 @@ const devtechUserModel = mongoose.model(
   userSchema,
   "devtechUsers"
 );
-export default devtechUserModel;
+module.exports[devtechUserModel];

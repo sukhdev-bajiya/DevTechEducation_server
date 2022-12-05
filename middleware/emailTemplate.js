@@ -18,4 +18,4 @@ Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_b
 <b><i> Team Dev Tech Education </i></b></p>
 </div>`;
 }
-export { emailTemplate };
+module.exports[emailTemplate];

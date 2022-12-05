@@ -46,4 +46,4 @@ const devtechLectureModel = mongoose.model(
   lectureSchema,
   "devtechlectures"
 );
-export default devtechLectureModel;
+module.exports[devtechLectureModel];
