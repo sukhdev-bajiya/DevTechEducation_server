@@ -201,24 +201,21 @@ UserAuthRouter.post("/add/newuser", async (req, res) => {
         data.userDeactive = false;
 
         // Update email body
-        const emailBody = `<div><p><b> Dear ${data.name} </b>,</p>
-<p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p>
-<p>Hope you are doing well,</p>
-<p>Please find below the important details regarding your education journey</p>
+        const emailBody0 = "<div><p><b> Dear ";
+        const emailBody1 =
+          "</b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p><p>Please find below the important details regarding your education journey</p><p>Important Details:-</p>Course Platform Username : <b> ";
+        const emailBody2 = "</b><br>Course Platform Password : <b>";
+        const emailBody4 =
+          '</b><br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank" >https://devtecheducation.netlify.app</a><br></p><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br> <b><i> Team Dev Tech Education </i></b></p></div>';
 
-<p>Important Details:-</p>
-Course Platform Username : <b> ${data.username} </b><br>
-Course Platform Password : <b> ${data.password} </b> <br>
-Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank" >https://devtecheducation.netlify.app</a><br>
-</p>
-
-<p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p>
-
-<p>Happy Learning!</p>
-
-<p>Regards,<br>
-<b><i> Team Dev Tech Education </i></b></p>
-</div>`;
+        const emailBody =
+          emailBody0 +
+          data.name +
+          emailBody1 +
+          data.username +
+          emailBody2 +
+          data.password +
+          emailBody4;
 
         // Convert password to secure password
         data.password = await bcrypt.hash(data.password, 10);
