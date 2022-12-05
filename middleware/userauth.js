@@ -2,7 +2,7 @@ import express from "express";
 import Jwt from "jsonwebtoken";
 import CryptoJS from "crypto-js";
 import bcrypt from "bcryptjs";
-import emailTemplate from "./emailtemplate.js";
+import { emailTemplate } from "./emailtemplate.js";
 import devtechUserModel from "../model/user.model.js";
 import devtechCourseModel from "../model/courses.model.js";
 import devtechLectureModel from "../model/lecture.model.js";

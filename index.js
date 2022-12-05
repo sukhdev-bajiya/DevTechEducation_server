@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import connection from "./config/index.js";
-import AuthRouter from "./middleware/authorization.js";
+import AuthRouter from "./middleware/auth.js";
 import UserAuthRouter from "./middleware/userauth.js";
 import LearnRouter from "./middleware/learn.js";
 
