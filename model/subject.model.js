@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const subjectSchema = new mongoose.Schema(
   {
@@ -34,4 +34,6 @@ const devtechSubjectModel = mongoose.model(
   subjectSchema,
   "devtechsubjects"
 );
-module.exports[devtechSubjectModel];
+// export default devtechSubjectModel;
+
+module.exports = { devtechSubjectModel };

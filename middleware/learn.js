@@ -1,11 +1,9 @@
-import express from "express";
-import Jwt from "jsonwebtoken";
-import CryptoJS from "crypto-js";
-import bcrypt from "bcryptjs";
-import devtechUserModel from "../model/user.model.js";
-import devtechCourseModel from "../model/courses.model.js";
-import devtechLectureModel from "../model/lecture.model.js";
-import devtechSubjectModel from "../model/subject.model.js";
+const express = require("express");
+const Jwt = require("jsonwebtoken");
+const { devtechUserModel } = require("../model/user.model.js");
+const { devtechCourseModel } = require("../model/courses.model.js");
+const { devtechLectureModel } = require("../model/lecture.model.js");
+const { devtechSubjectModel } = require("../model/subject.model.js");
 
 const LearnRouter = express.Router();
 const ServerToken = process.env.JwtToken;
@@ -545,4 +543,6 @@ LearnRouter.post("/buy/course", async (req, res) => {
   }
 });
 
-module.exports[LearnRouter];
+// export default LearnRouter;
+
+module.exports = { LearnRouter };

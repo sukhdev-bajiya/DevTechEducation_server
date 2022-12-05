@@ -1,11 +1,11 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
-import connection from "./config/index.js";
-import AuthRouter from "./middleware/auth.js";
-import UserAuthRouter from "./middleware/userauth.js";
-import LearnRouter from "./middleware/learn.js";
+const { connection } = require("./config/index.js");
+const { AuthRouter } = require("./middleware/auth.js");
+const { UserAuthRouter } = require("./middleware/userauth.js");
+const { LearnRouter } = require("./middleware/learn.js");
 
 const app = express();
 

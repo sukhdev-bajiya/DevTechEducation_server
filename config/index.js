@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
-import * as dotenv from 'dotenv'
-dotenv.config()
-
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const connection = mongoose.connect(process.env.MongodbServerLink);
 
-export default connection;
+module.exports = { connection };

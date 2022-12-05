@@ -1,10 +1,9 @@
-import express from "express";
-import bcrypt from "bcryptjs";
-import Jwt from "jsonwebtoken";
-import CryptoJS from "crypto-js";
-
-import devtechUserModel from "../model/user.model.js";
-import { emailTemplate } from "./emailtemplate.js";
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const Jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
+const { devtechUserModel } = require("../model/user.model.js");
+const { emailTemplate } = require("./emailtemplate.js");
 
 const AuthRouter = express.Router();
 
@@ -474,4 +473,6 @@ AuthRouter.post("/update/password", async (req, res) => {
   }
 });
 
-module.exports[AuthRouter];
+// export default AuthRouter;
+
+module.exports = { AuthRouter };
