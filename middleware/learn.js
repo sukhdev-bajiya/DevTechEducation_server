@@ -530,10 +530,15 @@ LearnRouter.post("/buy/course", async (req, res) => {
             }
           );
 
+          const data = CryptoJS.AES.encrypt(
+            JSON.stringify(devtechUser),
+            token
+          ).toString();
+
           // Output Obj
           Obj = {
             status: "true",
-            data: devtechUser,
+            data,
           };
         } else {
           // Output Obj
