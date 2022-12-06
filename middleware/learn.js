@@ -519,9 +519,21 @@ LearnRouter.post("/buy/course", async (req, res) => {
             );
           }
 
+          const devtechUser = await devtechUserModel.findById(
+            { _id: response.id },
+            {
+              securityAnswer1: 0,
+              securityAnswer2: 0,
+              lastLogin: 0,
+              lastUpdateData: 0,
+              password: 0,
+            }
+          );
+
           // Output Obj
           Obj = {
             status: "true",
+            data: devtechUser,
           };
         } else {
           // Output Obj
