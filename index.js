@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const { connection } = require("./config/index.js");
 const { AuthRouter } = require("./middleware/auth.js");
@@ -18,7 +19,7 @@ app.use("/user", UserAuthRouter);
 app.use("/learn", LearnRouter);
 
 app.get("/", (req, res) => {
-  return res.status(200).send("DEV TECH EDUCATION");
+  return res.status(200).sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.listen(8080, async () => {

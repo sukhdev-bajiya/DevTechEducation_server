@@ -7,7 +7,6 @@ const { devtechUserModel } = require("../model/user.model.js");
 const AuthRouter = express.Router();
 
 const ServerToken = process.env.JwtToken;
-const EmailToken = process.env.EmailToken;
 
 // User Signup routes
 AuthRouter.post("/signup", async (req, res) => {
