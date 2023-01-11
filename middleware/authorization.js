@@ -1,15 +1,12 @@
-import express from "express";
-import bcrypt from "bcryptjs";
-import Jwt from "jsonwebtoken";
-import CryptoJS from "crypto-js";
-
-import devtechUserModel from "../model/user.model.js";
-import emailTemplate from "./emailtemplate.js";
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const Jwt = require("jsonwebtoken");
+const CryptoJS = require("crypto-js");
+const devtechUserModel = require("../model/user.model.js");
 
 const AuthRouter = express.Router();
 
 const ServerToken = process.env.JwtToken;
-const EmailToken = process.env.EmailToken;
 
 // User Signup routes
 AuthRouter.post("/signup", async (req, res) => {
@@ -22,8 +19,7 @@ AuthRouter.post("/signup", async (req, res) => {
   data.password = data.email.split("@")[0];
   data.userDeactive = false;
 
-  // Update email body
-  const emailBody = emailTemplate(data.name, data.username, data.password);
+  const myPassword = data.password;
 
   // Convert password to secure password
   data.password = await bcrypt.hash(data.password, 10);
@@ -52,7 +48,7 @@ AuthRouter.post("/signup", async (req, res) => {
 
       // Send mail to user
       fetch(
-        `${EmailToken}?Name=${data.name}&Email=${email}&Number=${number}&Template=${emailBody}&Subject=Dev Tech Education Online Course Platform Login Credentials`
+        `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${data.name}&Email=${email}&Number=${number}&Template=<div><p><b> Dear ${data.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p><p>Please find below the important details regarding your education journey</p><p>Important Details:-</p>Course Platform Username : <b> ${data.username} </b><br>Course Platform Password : <b> ${myPassword} </b> <br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank" >https://devtecheducation.netlify.app</a><br></p><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Online Course Platform Login Credentials`
       );
 
       // Output Obj User created successfully

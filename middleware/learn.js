@@ -4,6 +4,7 @@ const { devtechUserModel } = require("../model/user.model.js");
 const { devtechCourseModel } = require("../model/courses.model.js");
 const { devtechLectureModel } = require("../model/lecture.model.js");
 const { devtechSubjectModel } = require("../model/subject.model.js");
+const CryptoJS = require("crypto-js");
 
 const LearnRouter = express.Router();
 const ServerToken = process.env.JwtToken;
@@ -489,7 +490,7 @@ LearnRouter.post("/delete/lectures", async (req, res) => {
 
 LearnRouter.post("/buy/course", async (req, res) => {
   let token = req.header("Authorization");
-  let data = req.body;
+  let inputData = req.body;
   try {
     await Jwt.verify(token, ServerToken, async (error, response) => {
       if (error) {
@@ -507,7 +508,7 @@ LearnRouter.post("/buy/course", async (req, res) => {
 
           let allr = await devtechUserModel.find({
             _id: response.id,
-            courses: { $in: data.title },
+            courses: { $in: inputData.title },
           });
 
           if (allr.length === 0) {
@@ -515,7 +516,7 @@ LearnRouter.post("/buy/course", async (req, res) => {
               {
                 _id: response.id,
               },
-              { $push: { courses: data.title } }
+              { $push: { courses: inputData.title } }
             );
           }
 
