@@ -17,8 +17,7 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
       if (error) {
         // Error part
         let Obj = {
-          success: false,
-          error: true,
+          status: "error",
           message: error.message,
         };
 
@@ -78,8 +77,7 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
           ).toString();
 
           Obj = {
-            success: true,
-            error: false,
+            status: "success",
             teacher,
             student,
             course,
@@ -121,8 +119,7 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
           ).toString();
 
           Obj = {
-            success: true,
-            error: false,
+            status: "success",
             student,
             course,
             lecture,
@@ -148,19 +145,16 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
           ).toString();
 
           Obj = {
-            success: true,
-            error: false,
+            status: "success",
             course,
             subject,
             lecture,
           };
         } else {
           Obj = {
-            success: false,
-            error: true,
+            status: "fail",
             message: "Invalid Role",
           };
-          return res.status(401).send(Obj);
         }
 
         return res.status(201).send(Obj);
@@ -169,8 +163,7 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
 
@@ -178,6 +171,7 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
     return res.status(401).send(Obj);
   }
 });
+
 UserAuthRouter.post("/add/newuser", async (req, res) => {
   let token = req.header("Authorization");
   let data = req.body;
@@ -187,6 +181,7 @@ UserAuthRouter.post("/add/newuser", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -212,21 +207,21 @@ UserAuthRouter.post("/add/newuser", async (req, res) => {
         if (user || response.role === "student") {
           // Output Obj User already exists
           Obj = {
-            status: "false",
+            status: "fail",
+            message: "User already exists with same number and email",
           };
         } else {
           // Add new user
           const devtechUser = devtechUserModel(data);
           await devtechUser.save();
 
-          fetch(
+          await fetch(
             `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${data.name}&Email=${email}&Number=${number}&Template=<div><p><b> Dear ${data.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p><p>Please find below the important details regarding your education journey</p><p>Important Details:-</p>Course Platform Username : <b> ${data.username} </b><br>Course Platform Password : <b> ${myPassword} </b> <br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank" >https://devtecheducation.netlify.app</a><br></p><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Online Course Platform Login Credentials`
           );
 
           // Output Obj User created successfully
           Obj = {
-            status: "true",
-            error: false,
+            status: "success",
             message: `User created successfully, Username and password send successfully on ${email}`,
           };
         }
@@ -238,11 +233,13 @@ UserAuthRouter.post("/add/newuser", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
   }
 });
+
 UserAuthRouter.post("/deactive", async (req, res) => {
   let token = req.header("Authorization");
   let data = req.body;
@@ -252,6 +249,7 @@ UserAuthRouter.post("/deactive", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -270,11 +268,13 @@ UserAuthRouter.post("/deactive", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
+            message: `User ${data.ac} successfully`,
           };
         } else {
           Obj = {
-            status: "false",
+            status: "fail",
+            message: "Invalid Role",
           };
         }
 
@@ -286,11 +286,13 @@ UserAuthRouter.post("/deactive", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
   }
 });
+
 UserAuthRouter.post("/edit", async (req, res) => {
   let token = req.header("Authorization");
   let data = req.body;
@@ -300,6 +302,7 @@ UserAuthRouter.post("/edit", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -329,12 +332,14 @@ UserAuthRouter.post("/edit", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
+            message: `User data update successfully`,
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
+            message: "Invalid Role",
           };
         }
         // Send response back
@@ -345,6 +350,7 @@ UserAuthRouter.post("/edit", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);

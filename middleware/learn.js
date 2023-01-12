@@ -18,6 +18,7 @@ LearnRouter.post("/add/course", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -33,12 +34,12 @@ LearnRouter.post("/add/course", async (req, res) => {
           await devtechCourse.save();
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -49,6 +50,7 @@ LearnRouter.post("/add/course", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
@@ -63,6 +65,7 @@ LearnRouter.post("/edit/course", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -82,12 +85,12 @@ LearnRouter.post("/edit/course", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -98,6 +101,7 @@ LearnRouter.post("/edit/course", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
@@ -112,6 +116,7 @@ LearnRouter.post("/delete/course", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -125,12 +130,12 @@ LearnRouter.post("/delete/course", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -141,6 +146,7 @@ LearnRouter.post("/delete/course", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
@@ -156,6 +162,7 @@ LearnRouter.post("/add/subject", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -179,12 +186,12 @@ LearnRouter.post("/add/subject", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -195,6 +202,7 @@ LearnRouter.post("/add/subject", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
 
     // Send response back
@@ -210,6 +218,7 @@ LearnRouter.post("/edit/subject", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -242,12 +251,12 @@ LearnRouter.post("/edit/subject", async (req, res) => {
           );
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -258,6 +267,7 @@ LearnRouter.post("/edit/subject", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
 
     // Send response back
@@ -273,6 +283,7 @@ LearnRouter.post("/delete/subject", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -299,12 +310,12 @@ LearnRouter.post("/delete/subject", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -315,6 +326,7 @@ LearnRouter.post("/delete/subject", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
@@ -330,6 +342,7 @@ LearnRouter.post("/add/lectures", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -352,12 +365,12 @@ LearnRouter.post("/add/lectures", async (req, res) => {
           );
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -368,6 +381,7 @@ LearnRouter.post("/add/lectures", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
 
     // Send response back
@@ -383,6 +397,7 @@ LearnRouter.post("/edit/lectures", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -415,12 +430,12 @@ LearnRouter.post("/edit/lectures", async (req, res) => {
           );
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -431,6 +446,7 @@ LearnRouter.post("/edit/lectures", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
 
     // Send response back
@@ -446,6 +462,7 @@ LearnRouter.post("/delete/lectures", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -466,12 +483,12 @@ LearnRouter.post("/delete/lectures", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -482,6 +499,7 @@ LearnRouter.post("/delete/lectures", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);
@@ -497,6 +515,7 @@ LearnRouter.post("/buy/course", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
         // Send response back
         return res.status(401).send(Obj);
@@ -538,13 +557,13 @@ LearnRouter.post("/buy/course", async (req, res) => {
 
           // Output Obj
           Obj = {
-            status: "true",
+            status: "success",
             data,
           };
         } else {
           // Output Obj
           Obj = {
-            status: "false",
+            status: "fail",
           };
         }
         // Send response back
@@ -555,6 +574,7 @@ LearnRouter.post("/buy/course", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
     // Send response back
     return res.status(401).send(Obj);

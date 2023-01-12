@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
-const devtechUserModel = require("../model/user.model.js");
+const { devtechUserModel } = require("../model/user.model.js");
 
 const AuthRouter = express.Router();
 
@@ -37,8 +37,7 @@ AuthRouter.post("/signup", async (req, res) => {
     if (user) {
       // Output Obj User already exists
       obj = {
-        success: false,
-        error: false,
+        status: "fail",
         message: "User already exists with same number and email",
       };
     } else {
@@ -47,14 +46,13 @@ AuthRouter.post("/signup", async (req, res) => {
       await devtechUser.save();
 
       // Send mail to user
-      fetch(
+      await fetch(
         `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${data.name}&Email=${email}&Number=${number}&Template=<div><p><b> Dear ${data.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p><p>Please find below the important details regarding your education journey</p><p>Important Details:-</p>Course Platform Username : <b> ${data.username} </b><br>Course Platform Password : <b> ${myPassword} </b> <br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank" >https://devtecheducation.netlify.app</a><br></p><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Online Course Platform Login Credentials`
       );
 
       // Output Obj User created successfully
       obj = {
-        success: true,
-        error: false,
+        status: "success",
         message: `User created successfully, Username and password send successfully on ${email}`,
       };
     }
@@ -63,8 +61,7 @@ AuthRouter.post("/signup", async (req, res) => {
   } catch (error) {
     // Error part
     let obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
 
@@ -117,8 +114,7 @@ AuthRouter.post("/signin", async (req, res) => {
       // Login Successful
       Obj = {
         userDeactive: devtechUser.userDeactive || false,
-        success: true,
-        error: false,
+        status: "success",
         message: "Login Successful",
         user: {
           role: devtechUser.role,
@@ -133,8 +129,7 @@ AuthRouter.post("/signin", async (req, res) => {
     } else {
       // Wrong Credentials
       Obj = {
-        success: false,
-        error: false,
+        status: "fail",
         message: "Wrong Credentials",
         user: {},
       };
@@ -145,8 +140,7 @@ AuthRouter.post("/signin", async (req, res) => {
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
 
@@ -163,8 +157,7 @@ AuthRouter.get("/goto/dashboard", async (req, res) => {
       if (error) {
         // Error part
         let Obj = {
-          success: false,
-          error: true,
+          status: "error",
           message: error.message,
         };
 
@@ -190,8 +183,7 @@ AuthRouter.get("/goto/dashboard", async (req, res) => {
         ).toString();
 
         return res.status(201).send({
-          success: true,
-          error: false,
+          status: "success",
           message: "Login Successful",
           user: {
             role: devtechUser.role,
@@ -207,8 +199,7 @@ AuthRouter.get("/goto/dashboard", async (req, res) => {
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
 
@@ -230,6 +221,7 @@ AuthRouter.post("/update/profile", async (req, res) => {
         // Error part
         let Obj = {
           status: "error",
+          message: error.message,
         };
 
         // Send response back
@@ -293,10 +285,9 @@ AuthRouter.post("/update/profile", async (req, res) => {
 
           // User profile updated successfully
           Obj = {
-            status: "true",
+            status: "success",
             data: {
-              success: true,
-              error: false,
+              status: "success",
               message: "User profile updated successfully",
               user: {
                 role: devtechUpdateUser.role,
@@ -311,7 +302,8 @@ AuthRouter.post("/update/profile", async (req, res) => {
         } else {
           // Wrong Credentials
           Obj = {
-            status: "false",
+            status: "error",
+            message: "Wrong Credentials",
           };
         }
 
@@ -323,6 +315,7 @@ AuthRouter.post("/update/profile", async (req, res) => {
     // Error part
     let Obj = {
       status: "error",
+      message: error.message,
     };
 
     // Send response back
@@ -355,16 +348,14 @@ AuthRouter.post("/get/username", async (req, res) => {
     if (devtechUser) {
       // Go to Security Questions
       Obj = {
-        success: true,
-        error: false,
+        status: "success",
         message: "Go to Security Questions",
         user: devtechUser,
       };
     } else {
       // Wrong Credentials
       Obj = {
-        success: false,
-        error: false,
+        status: "fail",
         message: "Wrong Credentials",
         user: {},
       };
@@ -375,8 +366,7 @@ AuthRouter.post("/get/username", async (req, res) => {
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
     // Send response back
@@ -408,16 +398,14 @@ AuthRouter.post("/reset/password", async (req, res) => {
     if (devtechUser) {
       // Go to Security Questions
       Obj = {
-        success: true,
-        error: false,
+        status: "success",
         message: "Go to Security Questions",
         user: devtechUser,
       };
     } else {
       // Wrong Credentials
       Obj = {
-        success: false,
-        error: true,
+        status: "fail",
         message: "Wrong Credentials",
         user: {},
       };
@@ -428,8 +416,7 @@ AuthRouter.post("/reset/password", async (req, res) => {
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
     // Send response back
@@ -454,15 +441,13 @@ AuthRouter.post("/update/password", async (req, res) => {
 
     // Send response back
     return res.status(201).send({
-      success: true,
-      error: false,
+      status: "success",
       message: "User password updated successfully",
     });
   } catch (error) {
     // Error part
     let Obj = {
-      success: false,
-      error: true,
+      status: "error",
       message: error.message,
     };
     // Send response back
@@ -470,4 +455,4 @@ AuthRouter.post("/update/password", async (req, res) => {
   }
 });
 
-export default AuthRouter;
+module.exports = { AuthRouter };

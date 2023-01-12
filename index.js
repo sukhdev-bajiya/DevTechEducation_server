@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 const { connection } = require("./config/index.js");
-const { AuthRouter } = require("./middleware/auth.js");
+const { AuthRouter } = require("./middleware/authorization.js");
 const { UserAuthRouter } = require("./middleware/userauth.js");
 const { LearnRouter } = require("./middleware/learn.js");
 
