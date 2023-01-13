@@ -35,8 +35,6 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
             { role: "teacher" },
             {
               password: 0,
-              securityAnswer1: 0,
-              securityAnswer2: 0,
               lastLogin: 0,
               lastUpdateData: 0,
             }
@@ -45,8 +43,6 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
             { role: "student" },
             {
               password: 0,
-              securityAnswer1: 0,
-              securityAnswer2: 0,
               lastLogin: 0,
               lastUpdateData: 0,
             }
@@ -92,8 +88,6 @@ UserAuthRouter.get("/getalluserlist", async (req, res) => {
             { role: "student" },
             {
               password: 0,
-              securityAnswer1: 0,
-              securityAnswer2: 0,
               lastLogin: 0,
               lastUpdateData: 0,
             }
@@ -313,13 +307,8 @@ UserAuthRouter.post("/edit", async (req, res) => {
         data.email = data.email.toLowerCase();
         const { username, email, number } = req.body;
         const user = await devtechUserModel.find({
-          $or: [
-            { username },
-            { number },
-            { email: { $regex: email, $options: "i" } },
-          ],
+          $or: [{ username }, { number }, { email }],
         });
-
         if (user.length === 1 && response.role !== "student") {
           // update user
           await devtechUserModel.findByIdAndUpdate(

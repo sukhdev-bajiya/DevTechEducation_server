@@ -33,18 +33,6 @@ const userSchema = new mongoose.Schema(
     userDeactive: {
       type: Boolean,
     },
-    securityQuestion1: {
-      type: String,
-    },
-    securityAnswer1: {
-      type: String,
-    },
-    securityQuestion2: {
-      type: String,
-    },
-    securityAnswer2: {
-      type: String,
-    },
     postAddress: {
       address: {
         type: String,

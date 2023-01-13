@@ -17,9 +17,15 @@ AuthRouter.post("/signup", async (req, res) => {
   // Update email, username, flag and password
   data.email = data.email.toLowerCase();
   data.username = Date.now();
-  data.password = data.email.split("@")[0];
   data.userDeactive = false;
 
+  let passCode = "";
+  for (let i = 0; i < 13; i++) {
+    let index = Math.floor(Math.random() * 61);
+    passCode += passwordTextChar[index];
+  }
+
+  data.password = passCode;
   const myPassword = data.password;
 
   // Convert password to secure password
@@ -81,8 +87,6 @@ AuthRouter.post("/signin", async (req, res) => {
     const devtechUser = await devtechUserModel.findOne(
       { username },
       {
-        securityAnswer1: 0,
-        securityAnswer2: 0,
         lastLogin: 0,
         lastUpdateData: 0,
       }
@@ -168,8 +172,6 @@ AuthRouter.get("/goto/dashboard", async (req, res) => {
         const devtechUser = await devtechUserModel.findById(
           { _id: response.id },
           {
-            securityAnswer1: 0,
-            securityAnswer2: 0,
             lastLogin: 0,
             lastUpdateData: 0,
           }
@@ -242,10 +244,6 @@ AuthRouter.post("/update/profile", async (req, res) => {
           let user_date = {
             name: user.name,
             dateofbirth: user.dateofbirth,
-            securityQuestion1: user.securityQuestion1,
-            securityAnswer1: user.securityAnswer1,
-            securityQuestion2: user.securityQuestion2,
-            securityAnswer2: user.securityAnswer2,
             postAddress: user.postAddress,
           };
 
@@ -271,8 +269,6 @@ AuthRouter.post("/update/profile", async (req, res) => {
           const devtechUpdateUser = await devtechUserModel.findById(
             { _id: response.id },
             {
-              securityAnswer1: 0,
-              securityAnswer2: 0,
               lastLogin: 0,
               lastUpdateData: 0,
             }
@@ -331,34 +327,25 @@ AuthRouter.post("/get/username", async (req, res) => {
     const { email, number } = req.body;
 
     // Find user
-    const devtechUser = await devtechUserModel.findOne(
-      { email, number },
-      {
-        securityQuestion1: 1,
-        securityAnswer1: 1,
-        securityQuestion2: 1,
-        securityAnswer2: 1,
-        _id: 1,
-        username: 1,
-      }
-    );
+    const devtechUser = await devtechUserModel.findOne({ email, number });
 
     // Output Obj
     let Obj;
 
     if (devtechUser) {
-      // Go to Security Questions
+      await axios.get(
+        `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${devtechUser.name}&Email=${devtechUser.email}&Number=${devtechUser.number}&Template=<div><p><b> Dear ${devtechUser.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p>Your Username : <b> ${devtechUser.username} </b><br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank">https://devtecheducation.netlify.app</a><br><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Genrate Username`
+      );
+      // Genrate Username
       Obj = {
         status: "success",
-        message: "Go to Security Questions",
-        user: devtechUser,
+        message: "Genrate Username",
       };
     } else {
       // Wrong Credentials
       Obj = {
         status: "fail",
         message: "Wrong Credentials",
-        user: {},
       };
     }
 
@@ -366,6 +353,7 @@ AuthRouter.post("/get/username", async (req, res) => {
     return res.status(201).send(Obj);
   } catch (error) {
     // Error part
+
     let Obj = {
       status: "error",
       message: error.message,
@@ -382,33 +370,45 @@ AuthRouter.post("/reset/password", async (req, res) => {
     const { username, email, number } = req.body;
 
     // Find user
-    const devtechUser = await devtechUserModel.findOne(
-      { username, email, number },
-      {
-        securityQuestion1: 1,
-        securityAnswer1: 1,
-        securityQuestion2: 1,
-        securityAnswer2: 1,
-        _id: 1,
-      }
-    );
+    const devtechUser = await devtechUserModel.findOne({
+      username,
+      email,
+      number,
+    });
 
     // Output Obj
     let Obj;
 
     if (devtechUser) {
-      // Go to Security Questions
+      let passCode = "";
+      for (let i = 0; i < 13; i++) {
+        let index = Math.floor(Math.random() * 61);
+        passCode += passwordTextChar[index];
+      }
+
+      const myPassword = passCode;
+
+      passCode = await bcrypt.hash(passCode, 10);
+      // Update user
+      await devtechUserModel.findByIdAndUpdate(
+        { _id: devtechUser.id },
+        { password: passCode }
+      );
+
+      await axios.get(
+        `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${devtechUser.name}&Email=${devtechUser.email}&Number=${devtechUser.number}&Template=<div><p><b> Dear ${devtechUser.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p>Your New Password : <b> ${myPassword}</b><br>Your Username : <b> ${devtechUser.username} </b><br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank">https://devtecheducation.netlify.app</a><br><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Genrate New Password`
+      );
+
+      // Go to
       Obj = {
         status: "success",
-        message: "Go to Security Questions",
-        user: devtechUser,
+        message: "Genrate New Password",
       };
     } else {
       // Wrong Credentials
       Obj = {
         status: "fail",
         message: "Wrong Credentials",
-        user: {},
       };
     }
 
@@ -425,35 +425,69 @@ AuthRouter.post("/reset/password", async (req, res) => {
   }
 });
 
-// User Update Password routes
-AuthRouter.post("/update/password", async (req, res) => {
-  try {
-    // Get user information
-    const { password, user } = req.body;
-
-    // Convert password to secure password
-    let newpassword = await bcrypt.hash(password, 10);
-
-    // Find user and update password
-    await devtechUserModel.findByIdAndUpdate(
-      { _id: user },
-      { password: newpassword }
-    );
-
-    // Send response back
-    return res.status(201).send({
-      status: "success",
-      message: "User password updated successfully",
-    });
-  } catch (error) {
-    // Error part
-    let Obj = {
-      status: "error",
-      message: error.message,
-    };
-    // Send response back
-    return res.status(500).send(Obj);
-  }
-});
-
 module.exports = { AuthRouter };
+
+const passwordTextChar = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
