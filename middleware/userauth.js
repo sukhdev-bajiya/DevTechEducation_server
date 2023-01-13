@@ -307,13 +307,8 @@ UserAuthRouter.post("/edit", async (req, res) => {
         data.email = data.email.toLowerCase();
         const { username, email, number } = req.body;
         const user = await devtechUserModel.find({
-          $or: [
-            { username },
-            { number },
-            { email: { $regex: email, $options: "i" } },
-          ],
+          $or: [{ username }, { number }, { email }],
         });
-
         if (user.length === 1 && response.role !== "student") {
           // update user
           await devtechUserModel.findByIdAndUpdate(
