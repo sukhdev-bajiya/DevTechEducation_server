@@ -17,9 +17,15 @@ AuthRouter.post("/signup", async (req, res) => {
   // Update email, username, flag and password
   data.email = data.email.toLowerCase();
   data.username = Date.now();
-  data.password = data.email.split("@")[0];
   data.userDeactive = false;
 
+  let passCode = "";
+  for (let i = 0; i < 13; i++) {
+    let index = Math.floor(Math.random() * 61);
+    passCode += passwordTextChar[index];
+  }
+
+  data.password = passCode;
   const myPassword = data.password;
 
   // Convert password to secure password
@@ -374,26 +380,23 @@ AuthRouter.post("/reset/password", async (req, res) => {
     let Obj;
 
     if (devtechUser) {
-      let password = devtechUser.email.split("@")[0];
-      password = await bcrypt.hash(password, 10);
+      let passCode = "";
+      for (let i = 0; i < 13; i++) {
+        let index = Math.floor(Math.random() * 61);
+        passCode += passwordTextChar[index];
+      }
+
+      const myPassword = passCode;
+
+      passCode = await bcrypt.hash(passCode, 10);
       // Update user
       await devtechUserModel.findByIdAndUpdate(
         { _id: devtechUser.id },
-        { password: password }
+        { password: passCode }
       );
 
       await axios.get(
-        `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${
-          devtechUser.name
-        }&Email=${devtechUser.email}&Number=${
-          devtechUser.number
-        }&Template=<div><p><b> Dear ${
-          devtechUser.name
-        } </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p>Your New Password : <b> ${
-          devtechUser.email.split("@")[0]
-        }</b><br>Your Username : <b> ${
-          devtechUser.username
-        } </b><br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank">https://devtecheducation.netlify.app</a><br><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Genrate New Password`
+        `https://script.google.com/macros/s/AKfycbzXTeE18f404PCyVtuK4Sw5-8dfDTIyFfbDdKEKjRP22KnqdG1DnDX1bWIGwL27HhZcaA/exec?Name=${devtechUser.name}&Email=${devtechUser.email}&Number=${devtechUser.number}&Template=<div><p><b> Dear ${devtechUser.name} </b>,</p><p>Greetings from <b> <i> Dev Tech Education! </i> </b> </p><p>Hope you are doing well,</p>Your New Password : <b> ${myPassword}</b><br>Your Username : <b> ${devtechUser.username} </b><br>Course Platform Link : <a href="https://devtecheducation.netlify.app" target="_blank">https://devtecheducation.netlify.app</a><br><p>You can write to us at <a href="mailto:devtecheducation@gmail.com" target="_blank">devtecheducation@gmail.com</a> for any additional information or queries</p><p>Happy Learning!</p><p>Regards,<br><b><i> Team Dev Tech Education </i></b></p></div>&Subject=Dev Tech Education Genrate New Password`
       );
 
       // Go to
@@ -423,3 +426,68 @@ AuthRouter.post("/reset/password", async (req, res) => {
 });
 
 module.exports = { AuthRouter };
+
+const passwordTextChar = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+];
